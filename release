@@ -17,9 +17,11 @@ CACERT=${SERVICEACCOUNT}/ca.crt
 
 # Pull the image into the cache directory and attain the image ID
 IMAGE_ID=$(podman pull --quiet  $REL_IMG --root="/cache")
+
 # Mount the image, so image-references can be used
 IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
 
+# Store the extracted image specification in an ImageStream object
 curl --data @${IMAGE_MOUNT}/release-manifests/image-references \
     --cacert ${CACERT} \
     --header "Authorization: Bearer ${TOKEN}" \

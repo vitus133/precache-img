@@ -18,17 +18,22 @@ spec:
     - name: REL_IMG
       value: "quay.io/openshift-release-dev/ocp-release:4.9.0-x86_64"
     command:
-    - /usr/local/bin/release
-    # - /bin/bash
-    # - -c
-    # - "sleep inf"
+    - /bin/bash
+    - -c
+    args:
+    - /usr/local/bin/release; sleep inf
     securityContext:
       privileged: true
       runAsUser: 0
     volumeMounts:
     - mountPath: /cache
       name: cache-volume
+    - mountPath: /var/lib/containers
+      name: containers
   volumes:
   - name: cache-volume
     emptyDir: {}
+  - name: containers
+    hostPath:
+      path: /var/lib/containers
   restartPolicy: Never

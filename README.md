@@ -15,5 +15,5 @@ make all
 ```bash
 oc apply -f deploy
 ```
-3. Monitor the status of your pod until the status becomes `completed`
+3. Monitor the status of your pod until the status becomes `completed`. Note - in this debug version the container will remain running to allow user to rsh into it
 4. Check that imagestream object is created in the pod namespace named as the desired OCP release (e.g. `4.9.0`) and containing the pull spec of all the release images

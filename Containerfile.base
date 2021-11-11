@@ -1,0 +1,14 @@
+# This base image is built automatically by quay trigger
+FROM registry.access.redhat.com/ubi8/podman:8.5-8
+USER root
+
+ENV oc_cli_tar=openshift-client-linux.tar.gz
+
+RUN dnf -y install jq && \
+    curl -JL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/${oc_cli_tar} -o oc.tar.gz && \
+    tar -xzvf oc.tar.gz && \
+    mv oc /usr/local/bin/oc && \
+    mv kubectl /usr/local/bin/kubectl && \
+    rm -f oc.tar.gz 
+USER 1001
+

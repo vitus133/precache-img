@@ -18,6 +18,9 @@ spec:
     - name: REL_IMG
       value: "quay.io/openshift-release-dev/ocp-release:4.9.0-x86_64"
     command:
+    # - /bin/bash
+    # - -c
+    # - "sleep inf"
     - /bin/bash
     - -c
     args:

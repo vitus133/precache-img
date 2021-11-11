@@ -1,4 +1,3 @@
-FROM registry.access.redhat.com/ubi8/podman:8.5-8
-
+FROM quay.io/vgrinber/cli-base:latest
 COPY release /usr/local/bin/
 

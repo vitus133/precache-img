@@ -31,12 +31,12 @@ spec:
     volumeMounts:
     - mountPath: /cache
       name: cache-volume
-    - mountPath: /var/lib/containers
-      name: containers
+    - mountPath: /var/lib
+      name: varlib
   volumes:
   - name: cache-volume
     emptyDir: {}
-  - name: containers
+  - name: varlib
     hostPath:
-      path: /var/lib/containers
+      path: /var/lib
   restartPolicy: Never

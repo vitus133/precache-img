@@ -16,7 +16,13 @@ spec:
     image: quay.io/vgrinber/pre-cache:latest
     env:
     - name: REL_IMG
-      value: "quay.io/openshift-release-dev/ocp-release:4.9.0-x86_64"
+      value: quay.io/openshift-release-dev/ocp-release:4.9.0-x86_64
+    - name: REDHAT_OPERATORS
+      value: advanced-cluster-management,local-storage-operator,ocs-operator,performance-addon-operator,ptp-operator,sriov-network-operator
+    - name: COMMUNITY_OPERATORS
+      value: hive-operator
+    - name: OCP_RELEASE
+      value: "4.9"
     command:
     # - /bin/bash
     # - -c

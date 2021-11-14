@@ -2,13 +2,21 @@
 FROM registry.access.redhat.com/ubi8/podman:8.5-8
 USER root
 
-ENV oc_cli_tar=openshift-client-linux.tar.gz
+ENV oc_cli_path=openshift-client-linux.tar.gz
+ENV oc_cli_tar=oc.tar.gz
+ENV opm_cli_path=opm-linux.tar.gz
+ENV opm_cli_tar=opm.tar.gz
+ENV cli_url=https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable
 
 RUN dnf -y install jq && \
-    curl -JL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/${oc_cli_tar} -o oc.tar.gz && \
-    tar -xzvf oc.tar.gz && \
+    curl --max-time 180 -L ${cli_url}/${oc_cli_path} -o ${oc_cli_tar} && \
+    tar -xzvf ${oc_cli_tar} && \
     mv oc /usr/local/bin/oc && \
     mv kubectl /usr/local/bin/kubectl && \
-    rm -f oc.tar.gz 
+    rm -f ${oc_cli_tar} && \
+    curl --max-time 180 -L ${cli_url}/${opm_cli_path} -o ${opm_cli_tar} && \
+    tar -xzvf ${opm_cli_tar} && \
+    mv opm /usr/local/bin/opm && \
+    rm -f ${opm_cli_tar}
 USER 1001
 

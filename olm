@@ -1,0 +1,12 @@
+#!/bin/bash
+
+. /usr/local/bin/common
+
+# Pull the image into the cache directory and attain the image ID
+IMAGE_ID=$(podman pull --quiet  $REDHAT_OPERATORS_INDEX --root="/cache" --authfile=/var/lib/kubelet/config.json )
+
+# Mount the image, so image-references can be used
+IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
+
+# Extract the database
+cp $IMAGE_MOUNT/database/index.db /tmp/

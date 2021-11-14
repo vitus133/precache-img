@@ -17,12 +17,10 @@ spec:
     env:
     - name: REL_IMG
       value: quay.io/openshift-release-dev/ocp-release:4.9.0-x86_64
+    - name: REDHAT_OPERATORS_INDEX
+      value: registry.redhat.io/redhat/redhat-operator-index:v4.9
     - name: REDHAT_OPERATORS
-      value: advanced-cluster-management,local-storage-operator,ocs-operator,performance-addon-operator,ptp-operator,sriov-network-operator
-    - name: COMMUNITY_OPERATORS
-      value: hive-operator
-    - name: OCP_RELEASE
-      value: "4.9"
+      value: '[{"local-storage-operator": {}}, {"performance-addon-operator": {}}, {"ptp-operator": {}}, {"sriov-network-operator": {}}]'
     command:
     # - /bin/bash
     # - -c

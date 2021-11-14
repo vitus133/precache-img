@@ -52,7 +52,6 @@ result_set = cur.execute(
     ','.join('?'*len(bundles_lst)), bundles_lst)
 csvs = result_set.fetchall()
 
-
 images = []
 for item in csvs:
     csv = json.loads(item[0].decode('utf8'))

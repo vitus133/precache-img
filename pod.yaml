@@ -28,7 +28,7 @@ spec:
     - /bin/bash
     - -c
     args:
-    - /usr/local/bin/release; sleep inf
+    - /usr/local/bin/release; /usr/local/bin/olm; sleep inf
     securityContext:
       privileged: true
       runAsUser: 0

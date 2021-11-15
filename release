@@ -4,12 +4,11 @@
 
 # Pull the image into the cache directory and attain the image ID
 IMAGE_ID=$(podman pull --quiet  $REL_IMG --root="/cache")
-log_debug "$REL_IMG image ID is $IMAGE_ID"
+echo "$REL_IMG image ID is $IMAGE_ID"
 
 # Mount the image, so image-references can be used
 IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
-log_debug "Image mount: $IMAGE_MOUNT"
+echo "Image mount: $IMAGE_MOUNT"
 
-IMAGE_LIST=$(cat ${IMAGE_MOUNT}/release-manifests/image-references |jq '.spec.tags[].from.name')
-log_debug "Release Image list:\n$IMAGE_LIST"
-echo $IMAGE_LIST >> /tmp/images.txt
+cat ${IMAGE_MOUNT}/release-manifests/image-references |jq '.spec.tags[].from.name' >> /tmp/images.txt
+echo "RELEASE processing done, Image list:\n$(cat /tmp/images.txt)"

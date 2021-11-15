@@ -4,16 +4,15 @@ set -e
 
 # Pull the image into the cache directory and attain the image ID
 IMAGE_ID=$(podman pull --quiet  $REDHAT_OPERATORS_INDEX --root="/cache" --authfile=/var/lib/kubelet/config.json )
-log_debug "$REDHAT_OPERATORS_INDEX image ID is $IMAGE_ID"
+echo "$REDHAT_OPERATORS_INDEX image ID is $IMAGE_ID"
 
 # Mount the image, so image-references can be used
 IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
-log_debug "Image mount: $IMAGE_MOUNT"
+echo "Image mount: $IMAGE_MOUNT"
 
 # Extract the database
 cp $IMAGE_MOUNT/database/index.db /tmp/
-log_debug "Extracted index database"
+echo "Extracted index database"
 
-IMAGE_LIST=$(/usr/libexec/platform-python /usr/local/bin/olm.py)
-log_debug "OLM Image list:\n$IMAGE_LIST"
-echo $IMAGE_LIST >> /tmp/images.txt
+/usr/libexec/platform-python /usr/local/bin/olm.py >> /tmp/images.txt
+echo "OLM processing done, Image list:\n$(cat /tmp/images.txt)"

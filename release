@@ -8,9 +8,11 @@ IMAGE_ID=$(podman pull --quiet  $REL_IMG --root="/cache")
 # Mount the image, so image-references can be used
 IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
 
-# Store the extracted image specification in an ImageStream object
-curl --data @${IMAGE_MOUNT}/release-manifests/image-references \
-    --cacert ${CACERT} \
-    --header "Authorization: Bearer ${TOKEN}" \
-    --header "Content-Type: application/json" \
-    --request POST ${APISERVER}/apis/image.openshift.io/v1/namespaces/${NAMESPACE}/imagestreams
+cat ${IMAGE_MOUNT}/release-manifests/image-references |jq '.spec.tags[].from.name' > /tmp/release-images.txt
+
+# # Store the extracted image specification in an ImageStream object
+# curl --data @${IMAGE_MOUNT}/release-manifests/image-references \
+#     --cacert ${CACERT} \
+#     --header "Authorization: Bearer ${TOKEN}" \
+#     --header "Content-Type: application/json" \
+#     --request POST ${APISERVER}/apis/image.openshift.io/v1/namespaces/${NAMESPACE}/imagestreams

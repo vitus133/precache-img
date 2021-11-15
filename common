@@ -14,3 +14,9 @@ TOKEN=$(cat ${SERVICEACCOUNT}/token)
 
 # Reference the internal certificate authority (CA)
 CACERT=${SERVICEACCOUNT}/ca.crt
+
+# Auxiliary logging function
+function log_debug(){
+  local LOGGER_TAG="update-pre-cache"
+  logger -t $LOGGER_TAG -p "syslog.debug" "$1"
+}

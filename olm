@@ -10,3 +10,5 @@ IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
 
 # Extract the database
 cp $IMAGE_MOUNT/database/index.db /tmp/
+
+/usr/libexec/platform-python /usr/local/bin/olm.py > /tmp/olm-images.txt

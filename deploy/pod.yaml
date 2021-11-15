@@ -20,7 +20,7 @@ spec:
     - name: REDHAT_OPERATORS_INDEX
       value: registry.redhat.io/redhat/redhat-operator-index:v4.9
     - name: REDHAT_OPERATORS
-      value: '[{"local-storage-operator": {}}, {"performance-addon-operator": {}}, {"ptp-operator": {}}, {"sriov-network-operator": {}}]'
+      value: '"local-storage-operator", "performance-addon-operator", "ptp-operator", "sriov-network-operator"'
     command:
     # - /bin/bash
     # - -c

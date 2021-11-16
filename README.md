@@ -10,10 +10,14 @@ make all
 ```
 ## Deploy ##
 ### Settings ###
-1. Open [pod.yaml](deploy/pod.yaml) and update the environment variable holding the release image (currently `"quay.io/openshift-release-dev/ocp-release:4.9.0-x86_64"` to the version you need.
-2. Deploy the pod, cluster role and role binding
+1. Open the [cm.yaml](cm.yaml) and update `platform.image`, `operators.indexes` and `operators.packagesAndChannels` to match your needs
+2. Deploy the config map
 ```bash
-oc apply -f deploy
+oc apply -f cm.yaml
 ```
-3. Monitor the status of your pod until the status becomes `completed`. Note - in this debug version the container will remain running to allow user to rsh into it
-4. Check that imagestream object is created in the pod namespace named as the desired OCP release (e.g. `4.9.0`) and containing the pull spec of all the release images
+3. Deploy the pod
+```bash
+oc apply -f pod yaml 
+```
+3. Monitor the status of your pod until the status becomes `completed`. The logs currently can only be monitored while the pod is running
+

@@ -1,24 +1,24 @@
 #!/bin/bash
-
+. /usr/local/bin/common
 
 function mirror_images {
     PULL_SECRET='/var/lib/kubelet/config.json'
     for line in $(sort -u /tmp/images.txt) ; do
         img="${line%\"}"
         img="${img#\"}"
-        echo "$(date) - update procedure, image pre-caching"
+        log_debug "$(date) - update procedure, image pre-caching"
         success=0
         iterations=10
         until [[ $success -eq 1 ]] || [[ $iterations -eq 0 ]]
         do
-            podman pull $img --authfile='/var/lib/kubelet/config.json'
+            timeout 600 podman pull $img --authfile='/var/lib/kubelet/config.json'
             if [[ $? == 0 ]]; then
                 success=1
             fi
             iterations=$((iterations - 1))
         done
         if [[ $success == 0 ]]; then
-            echo "failed to pull ${img}"
+            log_debug "failed to pull ${img}"
         fi
     done
 }

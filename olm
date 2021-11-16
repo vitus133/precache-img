@@ -2,18 +2,47 @@
 set -e
 . /usr/local/bin/common
 
-# Pull the image into the cache directory and attain the image ID
-IMAGE_ID=$(podman pull --quiet  $REDHAT_OPERATORS_INDEX --root="/cache" --authfile=/var/lib/kubelet/config.json )
-echo "$REDHAT_OPERATORS_INDEX image ID is $IMAGE_ID"
+process_index_db(){
+    db_path=$1
+    operators_spec_file=$2
 
-# Mount the image, so image-references can be used
-IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
-echo "Image mount: $IMAGE_MOUNT"
+    log_debug "Index image is database-based. This format is deprecated."
+    /usr/libexec/platform-python /usr/local/bin/olm_db.py "${db_path}" "${operators_spec_file}" 
+    return $?
+}
 
-# Extract the database
-cp $IMAGE_MOUNT/database/index.db /tmp/
-echo "Extracted index database"
+process_index_filesystem(){
+    index_path=$1
+    log_debug "Index image is file system based. This format is not yet implemented."
+    return 1
 
-/usr/libexec/platform-python /usr/local/bin/olm.py >> /tmp/images.txt
-echo "OLM processing done, Image list:"
-echo $(cat /tmp/images.txt)
+}
+
+main(){
+    declare -i ret_val=0
+    # There could be several indexes, hence the loop
+    for index in $(sort -u /etc/config/operators.indexes) ; do
+        image_id=$(podman pull --quiet  $index --root="/cache" --authfile=/var/lib/kubelet/config.json )
+        log_debug "$index image ID is $image_id"
+        image_mount=$(podman --root="/cache" image mount $image_id)
+        log_debug "Image mount: $image_mount"
+        operators_spec_file="/etc/config/operators.packagesAndChannels"
+        if [[ -f "$image_mount/database/index.db" ]]; then
+            process_index_db $image_mount/database/index.db $operators_spec_file
+        else
+            process_index_filesystem $image_mount $operators_spec
+        fi
+        ret_val=ret_val+$?
+        podman image unmount $image_id
+    done
+    log_debug "OLM pull spec extraction done"
+    if [[ $ret_val -ne 0 ]]; then
+        log_debug "Some of the extractions failed, please check the log."
+    fi
+    return $ret_val
+}
+
+if [[ "${BASH_SOURCE[0]}" = "${0}" ]]; then
+  main "${@}"
+  exit $?
+fi

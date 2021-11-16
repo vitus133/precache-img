@@ -15,13 +15,13 @@ spec:
   - name: pre-cache-container
     image: quay.io/vgrinber/pre-cache:latest
     command:
-    - /bin/bash
-    - -c
-    - "sleep inf"
     # - /bin/bash
     # - -c
-    # args:
-    # - /usr/local/bin/release; /usr/local/bin/olm; sleep inf
+    # - "sleep inf"
+    - /bin/bash
+    - -c
+    args:
+    - /usr/local/bin/release; /usr/local/bin/olm; /usr/local/bin/pull; sleep inf
     securityContext:
       privileged: true
       runAsUser: 0

@@ -14,3 +14,7 @@ TOKEN=$(cat ${SERVICEACCOUNT}/token)
 
 # Reference the internal certificate authority (CA)
 CACERT=${SERVICEACCOUNT}/ca.crt
+
+debug_log() {
+  echo "upgrades.pre-cache $(date -Iseconds) DEBUG $@"
+}

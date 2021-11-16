@@ -14,13 +14,6 @@ spec:
   containers:
   - name: pre-cache-container
     image: quay.io/vgrinber/pre-cache:latest
-    env:
-    - name: REL_IMG
-      value: quay.io/openshift-release-dev/ocp-release:4.9.4-x86_64
-    - name: REDHAT_OPERATORS_INDEX
-      value: registry.redhat.io/redhat/redhat-operator-index:v4.9
-    - name: REDHAT_OPERATORS
-      value: '"local-storage-operator", "performance-addon-operator", "ptp-operator", "sriov-network-operator"'
     command:
     - /bin/bash
     - -c
@@ -39,6 +32,8 @@ spec:
       name: varlibcontainers
     - mountPath: /var/lib/kubelet
       name: varlibkubelet
+    - mountPath: /etc/config 
+      name: config-volume
   volumes:
   - name: cache
     emptyDir: {}
@@ -48,4 +43,7 @@ spec:
   - name: varlibkubelet
     hostPath:
       path: /var/lib/kubelet
+  - name: config-volume
+    configMap:
+      name: pre-cache-spec
   restartPolicy: Never

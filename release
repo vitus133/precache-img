@@ -1,6 +1,13 @@
 #!/bin/bash
-
+set -e
 . /usr/local/bin/common
+
+if [[ ! -f "/etc/config/platform.image" ]]; then
+    debug_log "Platform image definition not found. Does pre-cache-spec configmap exist?"
+    exit 1
+fi
+
+$REL_IMG=$(cat /etc/config/platform.image)
 
 # Pull the image into the cache directory and attain the image ID
 IMAGE_ID=$(podman pull --quiet  $REL_IMG --root="/cache")

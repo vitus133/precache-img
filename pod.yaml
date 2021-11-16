@@ -21,7 +21,7 @@ spec:
     - /bin/bash
     - -c
     args:
-    - /usr/local/bin/release; /usr/local/bin/olm; /usr/local/bin/pull; sleep inf
+    - /usr/local/bin/release && /usr/local/bin/olm && /usr/local/bin/pull
     securityContext:
       privileged: true
       runAsUser: 0

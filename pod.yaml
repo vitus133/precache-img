@@ -16,31 +16,36 @@ spec:
     image: quay.io/vgrinber/pre-cache:latest
     env:
     - name: REL_IMG
-      value: quay.io/openshift-release-dev/ocp-release:4.9.0-x86_64
+      value: quay.io/openshift-release-dev/ocp-release:4.9.4-x86_64
     - name: REDHAT_OPERATORS_INDEX
       value: registry.redhat.io/redhat/redhat-operator-index:v4.9
     - name: REDHAT_OPERATORS
       value: '"local-storage-operator", "performance-addon-operator", "ptp-operator", "sriov-network-operator"'
     command:
-    # - /bin/bash
-    # - -c
-    # - "sleep inf"
     - /bin/bash
     - -c
-    args:
-    - /usr/local/bin/release; /usr/local/bin/olm; sleep inf
+    - "sleep inf"
+    # - /bin/bash
+    # - -c
+    # args:
+    # - /usr/local/bin/release; /usr/local/bin/olm; sleep inf
     securityContext:
       privileged: true
       runAsUser: 0
     volumeMounts:
     - mountPath: /cache
-      name: cache-volume
-    - mountPath: /var/lib
-      name: varlib
+      name: cache
+    - mountPath: /var/lib/containers
+      name: varlibcontainers
+    - mountPath: /var/lib/kubelet
+      name: varlibkubelet
   volumes:
-  - name: cache-volume
+  - name: cache
     emptyDir: {}
-  - name: varlib
+  - name: varlibcontainers
     hostPath:
-      path: /var/lib
+      path: /var/lib/containers
+  - name: varlibkubelet
+    hostPath:
+      path: /var/lib/kubelet
   restartPolicy: Never

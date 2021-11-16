@@ -1,0 +1,26 @@
+#!/bin/bash
+#podman pull --authfile=/var/lib/kubelet/config.json "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:7d65cb7408ec53238509b5de2a63fd5c573f4d6fc98d398af08417157e35eb56"
+
+function mirror_images {
+    PULL_SECRET='/var/lib/kubelet/config.json'
+    for line in $(sort -u /tmp/images.txt) ; do
+        img="${line%\"}"
+        img="${img#\"}"
+        echo "$(date) - update procedure, image pre-caching"
+        success=0
+        iterations=10
+        until [[ $success -eq 1 ]] || [[ $iterations -eq 0 ]]
+        do
+            podman pull $img --authfile='/var/lib/kubelet/config.json'
+            if [[ $? == 0 ]]; then
+                success=1
+            fi
+            iterations=$((iterations - 1))
+        done
+        if [[ $success == 0 ]]; then
+            echo "failed to pull ${img}"
+        fi
+    done
+}
+
+mirror_images

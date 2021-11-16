@@ -15,4 +15,5 @@ cp $IMAGE_MOUNT/database/index.db /tmp/
 echo "Extracted index database"
 
 /usr/libexec/platform-python /usr/local/bin/olm.py >> /tmp/images.txt
-echo "OLM processing done, Image list:\n$(cat /tmp/images.txt)"
+echo "OLM processing done, Image list:"
+echo $(cat /tmp/images.txt)

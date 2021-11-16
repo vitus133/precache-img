@@ -11,4 +11,5 @@ IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
 echo "Image mount: $IMAGE_MOUNT"
 
 cat ${IMAGE_MOUNT}/release-manifests/image-references |jq '.spec.tags[].from.name' >> /tmp/images.txt
-echo "RELEASE processing done, Image list:\n$(cat /tmp/images.txt)"
+echo "RELEASE processing done, Image list:"
+echo $(cat /tmp/images.txt)

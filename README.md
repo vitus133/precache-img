@@ -19,5 +19,5 @@ oc apply -f cm.yaml
 ```bash
 oc apply -f pod yaml 
 ```
-3. Monitor the status of your pod until the status becomes `completed`. The logs currently can only be monitored while the pod is present on the cluster
+3. Monitor your pod until the status becomes `completed`. The logs currently can only be monitored while the pod is present on the cluster
 

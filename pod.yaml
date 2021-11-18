@@ -18,9 +18,6 @@ spec:
     - name: podman_pull_timeoout_sec
       value: "600"
     command:
-    # - /bin/bash
-    # - -c
-    # - "sleep inf"
     - /bin/bash
     - -c
     args:

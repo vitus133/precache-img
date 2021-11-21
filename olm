@@ -7,7 +7,7 @@ process_index_db(){
     operators_spec_file=$2
 
     log_debug "Index image is database-based. This format is deprecated."
-    /usr/bin/python3 /usr/local/bin/olm_db.py "${db_path}" "${operators_spec_file}" "/tmp/images.txt"
+    /usr/libexec/platform-python /usr/local/bin/olm_db.py "${db_path}" "${operators_spec_file}" "/tmp/images.txt"
     return $?
 }
 

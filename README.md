@@ -10,14 +10,10 @@ make all
 ```
 ## Deploy ##
 ### Settings ###
-1. Open the [cm.yaml](cm.yaml) and update `platform.image`, `operators.indexes` and `operators.packagesAndChannels` to match your needs
+1. Open the [cm.yaml](spoke-deploy/cm.yaml) and update `platform.image`, `operators.indexes` and `operators.packagesAndChannels` to match your needs
 2. Deploy the config map
 ```bash
-oc apply -f cm.yaml
+oc apply -f spoke-deploy
 ```
-3. Deploy the pod
-```bash
-oc apply -f pod yaml 
-```
-3. Monitor your pod until the status becomes `completed`. The logs currently can only be monitored while the pod is present on the cluster
+3. Monitor your job / pod until completed. The logs can only be monitored while the pod is present on the cluster
 

@@ -33,6 +33,10 @@ spec:
           name: varlibkubelet
         - mountPath: /etc/config 
           name: config-volume
+        - mountPath: /etc/containers/registries.conf
+          name: registries
+        - mountPath: /etc/docker
+          name: etcdocker
       nodeSelector:
         node-role.kubernetes.io/master: ''
       serviceAccount: pre-cache-agent
@@ -43,6 +47,12 @@ spec:
       - name: varlibcontainers
         hostPath:
           path: /var/lib/containers
+      - name: registries
+        hostPath:
+          path: /etc/containers/registries.conf
+      - name: etcdocker
+        hostPath:
+          path: /etc/docker
       - name: varlibkubelet
         hostPath:
           path: /var/lib/kubelet

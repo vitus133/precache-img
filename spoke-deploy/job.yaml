@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pre-cache
+spec:
+  backoffLimit: 5
+  template:
+    metadata:
+      name: pre-cache
+    spec:
+      containers:
+      - name: pre-cache-container
+        image: quay.io/vgrinber/pre-cache:latest
+        env:
+        - name: pull_timeout
+          value: "600"
+        command:
+        - /bin/bash
+        - -c
+        args:
+        # - sleep inf
+        - /usr/local/bin/release && /usr/local/bin/olm && /usr/local/bin/pull
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /cache
+          name: cache
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+        - mountPath: /var/lib/kubelet
+          name: varlibkubelet
+        - mountPath: /etc/config 
+          name: config-volume
+      nodeSelector:
+        node-role.kubernetes.io/master: ''
+      serviceAccount: pre-cache-agent
+      serviceAccountName: pre-cache-agent
+      volumes:
+      - name: cache
+        emptyDir: {}
+      - name: varlibcontainers
+        hostPath:
+          path: /var/lib/containers
+      - name: varlibkubelet
+        hostPath:
+          path: /var/lib/kubelet
+      - name: config-volume
+        configMap:
+          name: pre-cache-spec
+      restartPolicy: Never                  

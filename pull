@@ -1,6 +1,6 @@
 #!/bin/bash
 . /usr/local/bin/common
-podman_pull_timeoout_sec="${podman_pull_timeoout_sec:-600}"
+pull_timeout="${pull_timeout:-600}"
 
 function mirror_images {
     PULL_SECRET='/var/lib/kubelet/config.json'
@@ -12,7 +12,7 @@ function mirror_images {
         iterations=10
         until [[ $success -eq 1 ]] || [[ $iterations -eq 0 ]]
         do
-            timeout $podman_pull_timeoout_sec podman pull $img --authfile='/var/lib/kubelet/config.json'
+            timeout $pull_timeout podman pull $img --authfile='/var/lib/kubelet/config.json'
             if [[ $? == 0 ]]; then
                 success=1
             fi

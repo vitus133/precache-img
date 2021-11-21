@@ -5,11 +5,11 @@ set -e
 REL_IMG=$(cat /etc/config/platform.image)
 
 # Pull the image into the cache directory and attain the image ID
-IMAGE_ID=$(podman pull --quiet  $REL_IMG --root="/cache")
+IMAGE_ID=$(buildah pull --quiet  --root="/cache" $REL_IMG)
 log_debug "$REL_IMG image ID is $IMAGE_ID"
 
 # Mount the image, so image-references can be used
-IMAGE_MOUNT=$(podman --root="/cache" image mount $IMAGE_ID)
+IMAGE_MOUNT=$(buildah --root="/cache" image mount $IMAGE_ID)
 log_debug "Image mount: $IMAGE_MOUNT"
 
 cat ${IMAGE_MOUNT}/release-manifests/image-references |jq '.spec.tags[].from.name' >> /tmp/images.txt

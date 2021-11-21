@@ -22,9 +22,9 @@ main(){
     declare -i ret_val=0
     # There could be several indexes, hence the loop
     for index in $(sort -u /etc/config/operators.indexes) ; do
-        image_id=$(podman pull --quiet  $index --root="/cache" --authfile=/var/lib/kubelet/config.json )
+        image_id=$(buildah pull --quiet  --root="/cache" --authfile=/var/lib/kubelet/config.json $index)
         log_debug "$index image ID is $image_id"
-        image_mount=$(podman --root="/cache" image mount $image_id)
+        image_mount=$(buildah --root="/cache" image mount $image_id)
         log_debug "Image mount: $image_mount"
         operators_spec_file="/etc/config/operators.packagesAndChannels"
         if [[ -f "$image_mount/database/index.db" ]]; then
@@ -33,7 +33,7 @@ main(){
             process_index_filesystem $image_mount $operators_spec
         fi
         ret_val=ret_val+$?
-        podman image unmount $image_id
+        buildah image unmount $image_id
     done
     log_debug "OLM pull spec extraction done"
     if [[ $ret_val -ne 0 ]]; then

@@ -21,12 +21,12 @@ process_index_filesystem(){
 main(){
     declare -i ret_val=0
     # There could be several indexes, hence the loop
-    for index in $(sort -u /etc/config/operators.indexes) ; do
+    for index in $(sort -u $config_volume_path/operators.indexes) ; do
         image_id=$(podman pull --quiet  $index --root="/cache" --authfile=/var/lib/kubelet/config.json )
         log_debug "$index image ID is $image_id"
         image_mount=$(podman --root="/cache" image mount $image_id)
         log_debug "Image mount: $image_mount"
-        operators_spec_file="/etc/config/operators.packagesAndChannels"
+        operators_spec_file="$config_volume_path/operators.packagesAndChannels"
         if [[ -f "$image_mount/database/index.db" ]]; then
             process_index_db $image_mount/database/index.db $operators_spec_file
         else

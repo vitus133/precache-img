@@ -2,7 +2,7 @@
 set -e
 . /usr/local/bin/common
 
-REL_IMG=$(cat /etc/config/platform.image)
+REL_IMG=$(cat $config_volume_path/platform.image)
 
 # Pull the image into the cache directory and attain the image ID
 IMAGE_ID=$(podman pull --quiet  $REL_IMG --root="/cache")

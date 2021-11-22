@@ -7,7 +7,13 @@ function mirror_images {
     for line in $(sort -u /tmp/images.txt) ; do
         img="${line%\"}"
         img="${img#\"}"
-        log_debug "$(date) - update procedure, image pre-caching"
+
+        podman image exists $img
+        if [[ $? == 0 ]]; then
+            log_debug "Skipping existing image $img"
+            continue
+        fi
+
         success=0
         iterations=10
         until [[ $success -eq 1 ]] || [[ $iterations -eq 0 ]]

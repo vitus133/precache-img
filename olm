@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
-. /usr/local/bin/common
+. /opt/precache/common
 
 process_index_db(){
     db_path=$1
     operators_spec_file=$2
 
     log_debug "Index image is database-based. This format is deprecated."
-    /usr/libexec/platform-python /usr/local/bin/olm_db.py "${db_path}" "${operators_spec_file}" "/tmp/images.txt"
+    /usr/libexec/platform-python /opt/precache/olm_db.py "${db_path}" "${operators_spec_file}" "/tmp/images.txt"
     return $?
 }
 

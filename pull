@@ -1,6 +1,6 @@
 #!/bin/bash
-. /usr/local/bin/common
-pull_timeout="${pull_timeout:-600}"
+. /opt/precache/common
+pull_timeout="${pull_timeout:-6000}"
 
 function mirror_images {
     PULL_SECRET='/var/lib/kubelet/config.json'

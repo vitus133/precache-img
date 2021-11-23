@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-. /usr/local/bin/common
+. /opt/precache/common
 
 REL_IMG=$(cat $config_volume_path/platform.image)
 

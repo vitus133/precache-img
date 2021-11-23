@@ -14,7 +14,7 @@ spec:
         image: quay.io/vgrinber/pre-cache:latest
         env:
         - name: pull_timeout
-          value: "3600"
+          value: "14400"
         - name: config_volume_path
           value: /etc/config
         command:

@@ -1,0 +1,9 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  name: olm-image-content-source
+spec:
+  repositoryDigestMirrors:
+  - mirrors:
+    - dhcp16-231-198.ptp.lab.eng.bos.redhat.com:5000/openshift4
+    source: registry.redhat.io/openshift4

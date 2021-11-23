@@ -1,0 +1,12 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  name: disconnected
+spec:
+  repositoryDigestMirrors:
+  - mirrors:
+    - dhcp16-231-198.ptp.lab.eng.bos.redhat.com:5000/ocp4/openshift4
+    source: quay.io/openshift-release-dev/ocp-release
+  - mirrors:
+    - dhcp16-231-198.ptp.lab.eng.bos.redhat.com:5000/ocp4/openshift4
+    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev

@@ -21,40 +21,51 @@ spec:
         - /bin/bash
         - -c
         args:
-        - sleep inf
-        #- /usr/local/bin/release && /usr/local/bin/olm && /usr/local/bin/pull
+        # - sleep inf
+        - /usr/local/bin/release && /usr/local/bin/olm && /usr/local/bin/pull
         securityContext:
           privileged: true
           runAsUser: 0
         volumeMounts:
-        - mountPath: /cache
-          name: cache
-        - mountPath: /var/lib/containers
-          name: varlibcontainers
-        - mountPath: /var/lib/kubelet/config.json
-          name: pull
-        - mountPath: /etc/config 
-          name: config-volume
-        - mountPath: /etc/containers/registries.conf
-          name: registries
-        - mountPath: /etc/docker
-          name: etcdocker
+        - name: cache
+          mountPath: /cache
+        - name: varlibcontainers
+          mountPath: /var/lib/containers
+        - name: pull
+          mountPath: /var/lib/kubelet/config.json
+        - name: config-volume
+          mountPath: /etc/config 
+        - name: registries
+          mountPath: /etc/containers/registries.conf
+        - name: policy
+          mountPath: /etc/containers/policy.json
+        - name: etcdocker
+          mountPath: /etc/docker
+         
       nodeSelector:
         node-role.kubernetes.io/master: ''
       serviceAccount: pre-cache-agent
       serviceAccountName: pre-cache-agent
+
       volumes:
       - name: cache
         emptyDir: {}
       - name: varlibcontainers
         hostPath:
           path: /var/lib/containers
+          type: Directory
       - name: registries
         hostPath:
           path: /etc/containers/registries.conf
+          type: File
+      - name: policy
+        hostPath:
+          path: /etc/containers/policy.json
+          type: File
       - name: etcdocker
         hostPath:
           path: /etc/docker
+          type: Directory
       - name: pull
         hostPath:
           path: /var/lib/kubelet/config.json
